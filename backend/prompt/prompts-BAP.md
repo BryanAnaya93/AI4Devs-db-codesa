@@ -242,7 +242,7 @@ erDiagram
          string email UNIQUE
          string role
          boolean is_active DEFAULT TRUE
-     }
+     } 
      POSITION {
          int id PK
          int company_id FK
