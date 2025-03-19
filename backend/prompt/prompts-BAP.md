@@ -229,7 +229,6 @@ Aquí tienes la respuesta en formato Markdown con las mejoras en el esquema, el 
 # **Modelo de Base de Datos Mejorado**
 
 ## **1. Diagrama ERD en Markdown (Mermaid)**
-
 ```mermaid
 erDiagram
      COMPANY {
