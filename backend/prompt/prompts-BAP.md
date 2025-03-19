@@ -239,10 +239,10 @@ erDiagram
          int id PK
          int company_id FK
          string name
-         string email UNIQUE
+         string email
          string role
-         boolean is_active DEFAULT TRUE
-     } 
+         boolean is_active
+     }
      POSITION {
          int id PK
          int company_id FK
@@ -250,7 +250,7 @@ erDiagram
          string title
          text description
          string status
-         boolean is_visible DEFAULT TRUE
+         boolean is_visible
          string location
          text job_description
          text requirements
@@ -276,20 +276,20 @@ erDiagram
      }
      INTERVIEW_TYPE {
          int id PK
-         string name UNIQUE
+         string name
          text description
      }
      CANDIDATE {
          int id PK
-         string first_name
-         string last_name
-         string email UNIQUE
+         string firstName
+         string lastName
+         string email
          string phone
          string address
      }
      CANDIDATE_PROFILE {
          int id PK
-         int candidate_id FK UNIQUE
+         int candidate_id FK
          text experience
          text education
          text skills
@@ -299,7 +299,7 @@ erDiagram
          int id PK
          int position_id FK
          int candidate_id FK
-         date application_date DEFAULT now()
+         date application_date
          string status
          text notes
      }
@@ -307,7 +307,7 @@ erDiagram
          int id PK
          int application_id FK
          string status
-         date change_date DEFAULT now()
+         date change_date
          text notes
      }
      INTERVIEW {
@@ -323,7 +323,6 @@ erDiagram
          int id PK
          int interview_id FK
          int employee_id FK
-         string role
      }
      INTERVIEW_FEEDBACK {
          int id PK
