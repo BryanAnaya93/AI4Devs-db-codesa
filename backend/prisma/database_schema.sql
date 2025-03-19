@@ -1,0 +1,115 @@
+CREATE TABLE COMPANY (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE EMPLOYEE (
+    id SERIAL PRIMARY KEY,
+    company_id INT REFERENCES COMPANY(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    role VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+
+CREATE TABLE INTERVIEW_TYPE (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT
+);
+
+
+CREATE TABLE INTERVIEW_FLOW (
+    id SERIAL PRIMARY KEY,
+    description TEXT NOT NULL
+);
+
+CREATE TABLE INTERVIEW_STEP (
+    id SERIAL PRIMARY KEY,
+    interview_flow_id INT REFERENCES INTERVIEW_FLOW(id) ON DELETE CASCADE,
+    interview_type_id INT REFERENCES INTERVIEW_TYPE(id),
+    name VARCHAR(255) NOT NULL,
+    order_index INT NOT NULL
+);
+
+CREATE TABLE POSITION (
+    id SERIAL PRIMARY KEY,
+    company_id INT REFERENCES COMPANY(id) ON DELETE CASCADE,
+    interview_flow_id INT REFERENCES INTERVIEW_FLOW(id),
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    status VARCHAR(50) NOT NULL,
+    is_visible BOOLEAN DEFAULT TRUE,
+    location VARCHAR(255),
+    job_description TEXT,
+    requirements TEXT,
+    responsibilities TEXT,
+    salary_min NUMERIC,
+    salary_max NUMERIC,
+    employment_type VARCHAR(100),
+    benefits TEXT,
+    company_description TEXT,
+    application_deadline DATE,
+    contact_info VARCHAR(255)
+);
+
+CREATE TABLE CANDIDATE (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(50),
+    address TEXT
+);
+
+CREATE TABLE CANDIDATE_PROFILE (
+    id SERIAL PRIMARY KEY,
+    candidate_id INT UNIQUE REFERENCES CANDIDATE(id) ON DELETE CASCADE,
+    experience TEXT,
+    education TEXT,
+    skills TEXT,
+    certifications TEXT
+);
+
+CREATE TABLE APPLICATION (
+    id SERIAL PRIMARY KEY,
+    position_id INT REFERENCES POSITION(id) ON DELETE CASCADE,
+    candidate_id INT REFERENCES CANDIDATE(id) ON DELETE CASCADE,
+    application_date TIMESTAMP DEFAULT now(),
+    status VARCHAR(50),
+    notes TEXT
+);
+
+CREATE TABLE APPLICATION_STATUS_HISTORY (
+    id SERIAL PRIMARY KEY,
+    application_id INT REFERENCES APPLICATION(id) ON DELETE CASCADE,
+    status VARCHAR(50) NOT NULL,
+    change_date TIMESTAMP DEFAULT now(),
+    notes TEXT
+);
+
+CREATE TABLE INTERVIEW (
+    id SERIAL PRIMARY KEY,
+    application_id INT REFERENCES APPLICATION(id) ON DELETE CASCADE,
+    interview_step_id INT REFERENCES INTERVIEW_STEP(id),
+    interview_date TIMESTAMP NOT NULL,
+    result VARCHAR(50),
+    score INT,
+    notes TEXT
+);
+
+CREATE TABLE INTERVIEW_EMPLOYEE (
+    id SERIAL PRIMARY KEY,
+    interview_id INT REFERENCES INTERVIEW(id) ON DELETE CASCADE,
+    employee_id INT REFERENCES EMPLOYEE(id) ON DELETE CASCADE,
+    role VARCHAR(100)
+);
+
+CREATE TABLE INTERVIEW_FEEDBACK (
+    id SERIAL PRIMARY KEY,
+    interview_id INT REFERENCES INTERVIEW(id) ON DELETE CASCADE,
+    employee_id INT REFERENCES EMPLOYEE(id) ON DELETE CASCADE,
+    score INT NOT NULL,
+    comments TEXT
+);
